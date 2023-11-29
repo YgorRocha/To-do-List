@@ -1,30 +1,22 @@
 package Usuario;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 public class User {
     private String name;
-    private int age;
     private String email;
     private String password;
+    private ArrayList<Task> task;
 
-    //Contructor
 
-
-    // GETTER AND SETTER
-
+    //GETTER AND SETTER
     public String getName() {
         return name;
     }
 
     public void setName(String name) {
         this.name = name;
-    }
-
-    public int getAge() {
-        return age;
-    }
-
-    public void setAge(int age) {
-        this.age = age;
     }
 
     public String getEmail() {
@@ -43,7 +35,11 @@ public class User {
         this.password = password;
     }
 
-    // Métodos
+    public ArrayList<Task> getTask() {
+        return task;
+    }
 
-
+    public void setTask(ArrayList<Task> task) {
+        this.task = task;
+    }
 }
