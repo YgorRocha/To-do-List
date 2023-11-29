@@ -1,3 +1,4 @@
+import Usuario.Task;
 import Usuario.User;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -6,139 +7,228 @@ import java.util.Scanner;
 // Press Shift twice to open the Search Everywhere dialog and type `show whitespaces`,
 // then press Enter. You can now see whitespace characters in your code.
 public class Main {
-
     public static User userLogged = null;
-    public static Scanner scanner = new Scanner(System.in);
+    public static Scanner scanner =  new Scanner(System.in);
 
     public static void main(String[] args) {
-        //Criar uma arrayList que irá guardar meus usuarios
         ArrayList<User> users = new ArrayList();
 
-        //Instanciar um método que lê dados
-         scanner = new Scanner(System.in);
-        boolean running = true;
+        scanner = new Scanner(System.in);
+        Boolean running = true;
+        while(running){
 
-        //Opções que o usuario tem
-        while (running) {
-            System.out.println("===Begging===");
+            System.out.println("=== START ===");
             System.out.println("[1] Register");
             System.out.println("[2] Login");
             System.out.println("[3] Exit");
-            System.out.println("Type your option: ");
-
-            String opcao = scanner.nextLine();
-            //Switch
-            switch (opcao) {
+            System.out.print("Type your option: ");
+            String option = scanner.nextLine();
+            // Switch
+            switch (option) {
                 case "1": {
-                    System.out.println("====REGISTER====");
-                    System.out.println("Type your email: ");
-                    String email =  scanner.nextLine();
-                    System.out.println("Type your name: ");
-                    String name = scanner.nextLine();
-                    System.out.println("Type your password: ");
+                    System.out.print("Register your email: ");
+                    String email = scanner.nextLine();
+                    System.out.print("Register your password: ");
                     String password = scanner.nextLine();
 
                     User user = new User();
                     user.setEmail(email);
-                    user.setName(name);
                     user.setPassword(password);
 
+                    ArrayList<Task> tasks = new ArrayList();
+                    user.setTask(tasks);
                     users.add(user);
-                    System.out.println("User has been create successfully");
+                    System.out.println(" -----> User was created successfully");
                     break;
                 }
                 case "2": {
-                    System.out.println("===Loggin===");
+
+                    System.out.println("=== LOGIN AREA === ");
+
                     System.out.print("Type your email: ");
                     String email = scanner.nextLine();
-                    System.out.print("Type your password");
+                    System.out.print("Type your password: ");
                     String password = scanner.nextLine();
+
 
                     boolean loginSucess = false;
                     for(User user : users){
+                        String emailLogin = user.getEmail();
+                        String passwordLogin = user.getPassword();
 
-                        String userEmail = user.getEmail();
-                        String userPassword = user.getPassword();
-
-                        boolean emailCheck = email.equals(userEmail);
-                        boolean passwordCheck = password.equals(userPassword);
+                        boolean emailCheck = email.equals(emailLogin);
+                        boolean passwordCheck = password.equals(passwordLogin);
 
                         if(emailCheck && passwordCheck){
                             loginSucess = true;
                             userLogged = user;
                             break;
                         }
-
                     }
                     if(!loginSucess){
-                        System.out.println("---> Incorrect");
+                        System.out.println("Password or email do not match");
+
                     }else {
-                        System.out.println("---> You are logged in");
+                        System.out.println("Log in successfully");
                         homePage();
                     }
+
                     break;
                 }
-                case "3": {
+
+                case "3":{
                     running = false;
-                    System.out.println("Ending program");
                     break;
                 }
-                default: {
+
+                default:
+                    System.out.println("Error in system");
                     break;
-                }
             }
-
         }
-
     }
-    public static void homePage() {
+    public static void homePage(){
         boolean running = true;
-
-        //prox passos do usuario
-
-        while (running) {
-            System.out.println("===HOME PAGE===");
+        while(running){
+            System.out.println("===== HOME PAGE =====");
             System.out.println("[1] Show Tasks");
             System.out.println("[2] Show completed tasks");
             System.out.println("[3] Show uncompleted tasks");
             System.out.println("[4] Add tasks");
-            System.out.println("[5] Remove tasks");
-            System.out.println("[6] Finish tasks");
+            System.out.println("[5] Finish tasks");
+            System.out.println("[6] Remove tasks");
             System.out.println("[7] logout");
+
             System.out.print("[8] Type your option: ");
+            System.out.print("Type your option: ");
+            String option = scanner.nextLine();
 
-            String opcao = scanner.nextLine();
+            //SWITCH
+            switch (option) {
+                case "1": {
+                    System.out.println("===== TASKS =====");
 
-            switch (opcao) {
-                case "1":
-                    System.out.println("Número é 1");
+                    ArrayList<Task> list = userLogged.getTask();
+                    if(list.isEmpty()){
+                        System.out.println("-----> Your list is empty");
+                    }else {
+                        for (int i = 0; i < list.size(); i++) {
+                            Task t = list.get(i);
+                            System.out.println("Task: " + i);
+                            System.out.println("\t Title: " + t.getTitle());
+                            System.out.println("\t Finished: " + t.isFinish());
+                        }
+                    }
                     break;
-                case "2":
-                    System.out.println("Número é 2");
-                    break;
-                case "3":
-                    System.out.println("Número é 3");
-                    break;
-                case "4":
-                     /*Arrays<Task> taskAdded = new ArrayList();*/
+                }
 
-                    System.out.println("Número é 3");
+                case "2": {
+                    ArrayList<Task> list = userLogged.getTask();
+                    ArrayList<Task> completedTasks = new ArrayList();
+
+                    for (Task t : list) {
+                        if (t.isFinish()) {
+                            completedTasks.add(t);
+                        }
+                    }
+                    if (completedTasks.isEmpty()) {
+                        System.out.println("There are no completed tasks");
+                    } else {
+                        for (int i = 0; i < completedTasks.size(); i++) {
+                            Task t = completedTasks.get(i);
+
+                            System.out.println("Task: " + i);
+                            System.out.println("\t Title: " + t.getTitle());
+                            System.out.println("\t Finished: " + t.isFinish());
+                        }
+                    }
+                }
                     break;
-                case "5":
-                    System.out.println("Número é 3");
+
+                case "3": {
+                        ArrayList<Task> list = userLogged.getTask();
+                        ArrayList<Task> unCompletedTasks = new ArrayList();
+
+                        for(Task t : list){
+                           if(!t.isFinish()){
+                               unCompletedTasks.add(t);
+                           }
+                        }
+                        if (unCompletedTasks.isEmpty()){
+                        System.out.println("All tasks was finished");
+                        }else {
+                            for (int i = 0; i < unCompletedTasks.size(); i++) {
+                                Task t = unCompletedTasks.get(i);
+
+                                System.out.println("Task: " + i);
+                                System.out.println("\t Title: " + t.getTitle());
+                                System.out.println("\t Finished: " + t.isFinish());
+                            }
+                        }
+                        break;
+                }
+                case "4": {
+                    Task task = new Task();
+                    System.out.print("Type de title of the task you want to add: ");
+                    String titleAdded = scanner.nextLine();
+
+                    task.setTitle(titleAdded);
+                    task.setFinish(false);
+
+                    userLogged.getTask().add(task);
+                    System.out.println("------> Added Task");
                     break;
-                case "6":
-                    System.out.println("Número é 3");
+                }
+                case "5": {
+                    ArrayList<Task> list = userLogged.getTask();
+                    ArrayList<Task> notfinished = new ArrayList();
+
+                    for(Task t : list){
+                        if(!t.isFinish()){
+                            notfinished.add(t);
+                        }
+                    }
+                    if(notfinished.isEmpty()){
+                        System.out.println("Theres no tasks open");
+                        homePage();
+                    }else {
+                        for (int i = 0; i < notfinished.size(); i++) {
+                            Task t = notfinished.get(i);
+                            System.out.println("["+ i +"]" + t.getTitle());
+                        }
+                        System.out.print("Enter the number of the task you want to finish: ");
+                        int posicao = scanner.nextInt();
+                        scanner.nextLine();
+                        Task finishedTasks = notfinished.get(posicao);
+                        finishedTasks.setFinish(true);
+                    }
                     break;
-                case "7":
+                }
+                case "6": {
+                    ArrayList<Task> list = userLogged.getTask();
+
+                    if(list.isEmpty()){
+                        System.out.println("Theres no tasks open");
+                        homePage();
+                    }
+                    for (int i = 0; i < list.size(); i++) {
+                        Task t = list.get(i);
+                        System.out.println("["+ i +"]" + t.getTitle());
+                    }
+                    System.out.print("Enter the number of the task you want to remove: ");
+                    int posicao = scanner.nextInt();
+                    scanner.nextLine();
+
+                    list.remove(posicao);
+                    break;
+                }
+                case "7": {
                     running = false;
-                    System.out.println("logging out");
                     break;
+                }
                 default:
-
                     break;
             }
         }
     }
-
 }
